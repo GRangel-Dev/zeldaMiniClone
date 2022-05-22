@@ -12,19 +12,22 @@ import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable, KeyListener{
 	
-	public static int WIDHT = 480, HEIGHT = 480;
+	public static int WIDHT = 640, HEIGHT = 480;
+	public static int SCALE = 3; 
 	public Player player;
 	public World world;
 	
 	public Game() {
 		this.addKeyListener(this);
 		this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
+		
 		new SpriteSheet();
 		player = new Player(32,32);
 		world = new World();
 	}
 	
 	public  void tick() {
+				
 		player.tick();
 	}
 	
@@ -39,7 +42,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		Graphics g = bs.getDrawGraphics();
 		
 		g.setColor(new Color(0, 135, 13));
-		g.fillRect(0, 0, WIDHT, HEIGHT);
+		g.fillRect(0, 0, WIDHT*SCALE, HEIGHT*SCALE);
 		
 		player.render(g);
 		world.render(g);
@@ -90,6 +93,10 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			player.up = true;
 		} else if(e.getKeyCode()== KeyEvent.VK_DOWN) {
 			player.down = true;
+		}
+		
+		if(e.getKeyCode()== KeyEvent.VK_SPACE) {
+			player.shoot = true;
 		}
 	}
 
