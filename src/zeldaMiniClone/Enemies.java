@@ -5,11 +5,12 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Enemies extends Rectangle{
 	
 	public int right = 1, left = 0, down = 0, up = 0;
-	public int spd = 4;
+	public int spd = 2;
 	public int curAnimation = 0;
 	public int curFrames = 0, taregetFrames = 15;
 	public static List<Bullet> bullets = new ArrayList<Bullet>();
@@ -21,11 +22,29 @@ public class Enemies extends Rectangle{
 		super(x,y,32,32);
 	}
 	
+	public void perseguirPlayer() {
+		Player p = Game.player;
+		if(x < p.x && World.isFree(x+spd, y)) {
+			if(new Random().nextInt(100) < 50) 
+			 x+=spd;
+		}else if(x > p.x && World.isFree(x-spd, y)) {
+			if(new Random().nextInt(100) < 50)
+			x-=spd;
+		}
+		if(y < p.y && World.isFree(x, y+spd)) {
+			if(new Random().nextInt(100) < 50)
+			y+=spd;
+		}else if(y > p.y && World.isFree(x, y-spd)) {
+			if(new Random().nextInt(100) < 50)
+			y-=spd;
+		}
+	}
+	
 	public void tick() {
 		boolean moved = true;
-		if(right == 1 && World.isFree(x +1, y)) {
-			x++;
-		}
+		
+		perseguirPlayer();
+		
 		if(moved) {
 		curFrames++;
 		if(curFrames == taregetFrames) {
